@@ -6,9 +6,11 @@
   ],
   "type": "module",
   "scripts": {
-    "check": "bun run --filter @nsh-template/client check && bun fmt",
+    "check": "bun run --filter @nsh-template/client check && bun fmt --check",
     "dev": "bun run --filter @nsh-template/client dev",
-    "test:app": "bun run --filter @nsh-template/client test"
+    "fmt": "bun fmt",
+    "test": "bun run --filter @nsh-template/client test",
+    "test:app": "bun run test"
   },
   "devDependencies": {
     "@types/bun": "latest",

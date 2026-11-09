@@ -14,7 +14,7 @@
     "dev:ios": "nsh run App.tsx --target ios",
     "dev:android": "nsh run App.tsx --target android",
     "dev:server": "nsh dev App.tsx --server-only",
-    "check": "nsh check",
+    "check": "nsh check && nsh build",
     "package:macos": "nsh package --target macos --run",
     "package:windows": "nsh package --target windows",
     "package:linux": "nsh package --target linux",
