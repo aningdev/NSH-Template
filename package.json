@@ -1,0 +1,19 @@
+{
+  "name": "nsh-template",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "check": "bun run --filter @nsh-template/client check && bun fmt --check",
+    "dev": "bun run --filter @nsh-template/client dev",
+    "fmt": "bun fmt",
+    "test": "bun run --filter @nsh-template/client test",
+    "test:app": "bun run test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^7"
+  }
+}

@@ -1,0 +1,7 @@
+[fmt]
+ignorePatterns = [".agents/", "references/**", "**/*.gen.ts"]
+sortImports = true
+sortTailwindcss = true
+sortPackageJson = true
+jsdoc = true
+

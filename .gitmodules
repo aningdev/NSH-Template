@@ -1,0 +1,4 @@
+[submodule "references/nsh"]
+	path = references/nsh
+	url = https://github.com/longbridge/nsh.git
+

@@ -1,0 +1,49 @@
+name: check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # 自带 Bun 可执行文件的缓存。没有依赖缓存这个开关。
+      - uses: oven-sh/setup-bun@v2
+
+      # NSH 没有 setup action，安装脚本每次都重新下载。
+      # 缓存键必须带发布标签，否则会一直用第一次装上的那一版。
+      - name: NSH release
+        id: nsh-release
+        run: |
+          tag="$(curl -fsSL \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            https://api.github.com/repos/longbridge/nsh/releases/latest \
+            | jq -r .tag_name)"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v6
+        id: nsh
+        with:
+          path: |
+            ~/.nsh
+            ~/.cache/nsh
+          key: ${{ runner.os }}-nsh-${{ steps.nsh-release.outputs.tag }}
+
+      - run: bun install --frozen-lockfile
+
+      - if: steps.nsh.outputs.cache-hit != 'true'
+        env:
+          NSH_VERSION: ${{ steps.nsh-release.outputs.tag }}
+        run: curl -fsSL https://nsh.dev/install.sh | sh
+
+      - run: |
+          mkdir -p "$HOME/.local/bin"
+          ln -sfn "$HOME/.nsh/bin/nsh" "$HOME/.local/bin/nsh"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - run: |
+          bun run check
+          bun run test
